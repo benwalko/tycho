@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# Job outputs (don't commit real client/scrape data)
+jobs/*/
+!jobs/README.md
+
+# Agent working files
+*.checkpoint.json
+checkpoint.json
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code local overrides (personal settings, never shared)
+.claude/settings.local.json
+
+# Large example data (keep only the write-ups, not the full datasets)
+examples/*/output/deliverable.xlsx
+examples/*/output/analysis_report.pdf
+examples/*/output/charts/
+examples/*/output/portfolio/
+examples/*/checkpoints/

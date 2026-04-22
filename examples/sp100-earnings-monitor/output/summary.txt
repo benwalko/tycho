@@ -1,0 +1,99 @@
+S&P 100 Earnings Season Monitor - Summary
+=======================================================
+Generated: 2026-04-22T15:17:39+00:00
+Window: 2026-03-23 to 2026-04-22 (30 calendar days)
+10Y Treasury Yield: 4.288% (close 2026-04-22)
+
+Total companies in dataset: 101
+Reported earnings in window: 29
+Did not report in window: 72
+
+Earnings outcomes (among companies that reported in window):
+  EPS Beats:    18 (62.1%)
+  EPS Misses:   3 (10.3%)
+  EPS In-Line:  2 (6.9%)
+  Double Beats (EPS + Revenue): 8
+
+Field coverage across ALL companies:
+  Ticker: 100.0%
+  Company: 100.0%
+  Sector (GICS / S&P 100): 100.0%
+  Industry (Yahoo): 100.0%
+  Market Cap (USD): 100.0%
+  Forward P/E: 100.0%
+  Analyst Rec Mean: 99.0%
+  CIK: 100.0%
+  Earnings Yield (%): 100.0%
+
+Field coverage among companies that reported in window:
+  EPS Estimate: 96.6%
+  EPS Actual: 79.3%
+  EPS Surprise (%): 79.3%
+  Revenue Estimate (USD): 100.0%
+  Revenue Actual (USD): 100.0%
+  Revenue Surprise (%): 100.0%
+  Price On Earnings Close: 100.0%
+  Price +1 Trading Day: 75.9%
+  Price +5 Trading Days: 31.0%
+  1-Day Reaction (%): 75.9%
+  1-Week Reaction (%): 31.0%
+  10-Q Filing Date: 27.6%
+
+Notes:
+- 10Y yield quoted from ^TNX (Yahoo). Same value across all rows.
+- Revenue Actual from yfinance quarterly income statement is sometimes NaN
+  for the most recent reported quarter while the estimate/EPS are already present.
+  This is a data-source lag, not a scraping error.
+- EPS Surprise (%) comes directly from yfinance earnings_dates.
+- 10-Q filings are matched on FILING DATE within the window. A company may have
+  reported earnings in-window but filed the 10-Q outside of it.
+- Companies without an earnings report in the window remain in the output with
+  empty earnings fields and a note.
+
+Analysis (appended by analyst agent)
+=======================================================
+
+Beat / miss (among 23 classified reporters):
+  Beats:   18 (78.3%)
+  Misses:  3 (13.0%)
+  In-Line: 2 (8.7%)
+  Double beats (EPS + revenue): 8
+
+1-day reaction distribution (n=22):
+  Min    -15.51%
+  Median -0.61%
+  Mean   -1.26%
+  Max    +7.94%
+
+1-week reaction distribution (n=9):
+  Min    -18.35%
+  Median -0.18%
+  Mean   -2.13%
+  Max    +5.72%
+
+Reaction-vs-surprise alignment (1-day):
+  Aligned Positive: 7
+  Aligned Negative: 3
+  Contra: 12
+
+Forward P/E across universe (n=101, positive values):
+  Median 17.9
+  Mean   21.7
+
+Earnings yield vs 10Y spread (10Y = 4.288%):
+  Companies with positive spread: 74 / 101
+  Median spread: +129.7 bps
+
+Reporters by sector:
+  Financials: 11
+  Health Care: 5
+  Industrials: 4
+  Information Technology: 4
+  Communication Services: 2
+  Consumer Discretionary: 2
+  Consumer Staples: 1
+
+Deliverables produced:
+  deliverable.xlsx - appended Summary / Analysis / Charts sheets
+  analysis_report.pdf - narrative report with charts and tables
+  charts/ - 9 PNG charts at 150 DPI

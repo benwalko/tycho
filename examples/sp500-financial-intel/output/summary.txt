@@ -1,0 +1,103 @@
+S&P 500 Financial Intelligence Dataset - Summary
+Generated: 2026-04-16 14:44
+============================================================
+
+Total Companies: 503
+Total Columns: 35
+
+DATA SOURCES
+  Yahoo Finance: 503/503 companies fetched
+  SEC EDGAR: 465/503 with Form 4 filings
+  SEC EDGAR (transaction detail): 74/503
+  Treasury 10Y Yield: 4.313%
+  BLS Employment Sectors: 10
+
+FIELD COVERAGE
+  Ticker                                   [####################] 100.0%
+  Company                                  [####################] 100.0%
+  Sector                                   [####################] 100.0%
+  Headquarters                             [####################] 100.0%
+  Price                                    [####################] 100.0%
+  52W High                                 [####################] 100.0%
+  52W Low                                  [####################] 100.0%
+  Market Cap                               [####################] 100.0%
+  P/E Forward                              [####################] 100.0%
+  Analyst Rec Key                          [####################] 100.0%
+  Earnings Date                            [####################] 100.0%
+  Form 4 Filings (90d)                     [####################] 100.0%
+  Insider Buys                             [####################] 100.0%
+  Insider Sells                            [####################] 100.0%
+  Insider Buy Value $                      [####################] 100.0%
+  Insider Sell Value $                     [####################] 100.0%
+  Treasury 10Y %                           [####################] 100.0%
+  Sector Employment (K)                    [####################] 100.0%
+  Sector Emp YoY %                         [####################] 100.0%
+  Sector Emp MoM %                         [####################] 100.0%
+  Sector Employment Momentum               [####################] 100.0%
+  Composite Signal                         [####################] 100.0%
+  Industry                                 [###################.]  99.8%
+  Revenue                                  [###################.]  99.8%
+  Profit Margin                            [###################.]  99.8%
+  Analyst Rec                              [###################.]  99.0%
+  Beta                                     [###################.]  98.4%
+  P/E Trailing                             [##################..]  94.2%
+  Earnings Yield %                         [##################..]  94.2%
+  Earnings Yield vs 10Y Spread             [##################..]  94.2%
+  ROE %                                    [##################..]  93.2%
+  Free Cash Flow                           [##################..]  93.2%
+  Debt/Equity                              [##################..]  90.7%
+  Dividend Yield %                         [################....]  81.1%
+  Insider Sentiment                        [##..................]  14.7%
+
+DERIVED COLUMNS
+  Insider Sentiment: 74/503 (14.7%)
+  Earnings Yield vs 10Y Spread: 474/503 (94.2%)
+  Sector Employment Momentum: 503/503 (100.0%)
+  Composite Signal: 503/503 (100.0%)
+
+COMPOSITE SIGNAL DISTRIBUTION
+  Bearish: 259 (51.5%)
+  Mixed: 206 (41.0%)
+  Bullish: 38 (7.6%)
+  N/A: 0 (0.0%)
+
+SECTOR BREAKDOWN
+  Technology: 83
+  Industrials: 74
+  Financial Services: 70
+  Healthcare: 58
+  Consumer Cyclical: 54
+  Consumer Defensive: 35
+  Utilities: 31
+  Real Estate: 31
+  Communication Services: 24
+  Energy: 22
+  Basic Materials: 20
+  Financials: 1
+
+
+ANALYSIS
+============================================================
+Generated: 2026-04-16 14:50
+
+COMPOSITE SIGNAL SUMMARY
+  Bullish: 38 (7.6%)
+  Mixed: 206 (41.0%)
+  Bearish: 259 (51.5%)
+
+VALUATION CONTEXT
+  Treasury 10Y: 4.313%
+  Median Earnings Yield Spread: -0.39%
+  Companies above risk-free: 199 (40%)
+  Companies below risk-free: 275 (55%)
+  Median Forward P/E: 17.3
+
+SECTOR LEADERS (by bullish signal count)
+  Healthcare: 20 bullish
+  Utilities: 17 bullish
+  Financial Services: 1 bullish
+
+DELIVERABLES PRODUCED
+  deliverable.xlsx: Enhanced with Summary, Analysis, Charts sheets
+  analysis_report.pdf: 7-chart report with executive summary
+  charts/: 7 PNG chart images at 150 DPI
