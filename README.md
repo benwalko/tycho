@@ -1,8 +1,16 @@
 # Tycho
 
-An agentic scraping framework that runs end to end inside a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) session. You describe what you want in plain language. An orchestrator spawns specialized agents to handle recon, scraping, and analysis, then drops the deliverables in a job directory. Every job updates a shared knowledge base, so the next one starts a step ahead.
+An agentic scraping framework that runs end to end inside a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) session. You describe what you want in plain language. An orchestrator spawns specialized agents to handle recon, scraping, and analysis, then drops the deliverables in a job directory.
 
-Named for Tycho Brahe, the Danish astronomer whose four decades of patient, meticulous observation built the catalog that Kepler used to derive the laws of planetary motion. The framework gathers data the same way: carefully, from multiple angles, into a shared record that outlives any single job.
+What makes Tycho different is what happens after the job ends. Every job writes back what it learned to a shared knowledge base:
+
+- **Site profiles** record what worked and what didn't on each domain, including rate limits observed at scale.
+- **The toolbox** accumulates reusable code patterns that survive across jobs.
+- **Skill files** absorb new methodology when a job surfaces a gap in guidance.
+
+The first scrape of a site is cold. The tenth is warm. See [Knowledge Base](#knowledge-base) for how the compounding loop is structured.
+
+Named for Tycho Brahe, the Danish astronomer whose four decades of patient, pre-telescope observation built the catalog that Kepler used to derive the laws of planetary motion. The framework gathers data the same way: from multiple angles, into a shared record that outlives any single job.
 
 Multi-source enrichment is the sweet spot: combining a few clean public sources into one deliverable that didn't exist before.
 
@@ -24,6 +32,8 @@ The orchestrator never scrapes. Agents never make strategic calls. Each role sta
 ## Why This Exists
 
 Most scraping work is one site at a time, scripts in someone's repo, knowledge in someone's head. Multi-source enrichment usually means stitching together separate downstream pipelines after the fact. This framework runs the whole job in one session: recon, scraping, analysis, writeup. Every learning lands in shared files so the next job benefits.
+
+Over time, the knowledge base becomes the part of the repo that's hardest to replace. The code can be rewritten; an accumulated set of site profiles built from actual probing cannot.
 
 ## Project Structure
 
@@ -137,13 +147,46 @@ The orchestrator spawns an agent by passing its name as `subagent_type` (`resear
 
 ## Knowledge Base
 
+The knowledge base is the part of Tycho that compounds. Each job writes back what it learned, so the next job on the same site, or using the same pattern, starts from a warmer position than the one before. Everything here lives in the repo as plain markdown and Python, version-controlled alongside the code.
+
+The orchestrator owns all updates and merges them during the post-job retrospective. In-flight agents propose updates in their `execution_log.md` and never touch the shared files directly. That single-writer rule is deliberate: it keeps two jobs on the same domain from stomping on each other.
+
+Four pieces do the work.
+
 ### Site Profiles (`skills/sites/`)
 
-One file per domain. Each profile records what works, what doesn't, and what rate limits were observed. After every job on a domain, the orchestrator updates that domain's profile. A job on the same site six months later starts from everything the first job figured out.
+One markdown file per domain. Records observed rate limits, auth requirements, anti-bot posture, pagination details, embedded-state paths, approaches that worked, and approaches that failed. A job on the same site six months later starts from everything the first job figured out, including the mistakes it would otherwise repeat.
+
+Each profile carries a viability verdict (green / yellow / red) and a `last_probed` date. The orchestrator uses the verdict to decide whether to take a new job on the domain without spending tokens on fresh recon, and refreshes the profile when the date drifts past 180 days.
+
+The first profile checked in is `sec-gov-edgar` (multi-rate-pool behavior, 10K/query cap, UA-email requirement). New profiles are added one row at a time to `skills/sites/index.md`.
 
 ### Toolbox (`skills/toolbox/`)
 
-Code recipes that apply across sites: rate-limited sessions, checkpoint/resume, data cleaning, output formatting, schema validation, anti-detection setup. Agents reference these directly when writing scrapers instead of rolling the patterns from scratch.
+Reusable code patterns split into focused modules. Current contents:
+
+- `headers.md`: UA profiles, `probe_url()`, session setup.
+- `scraping.md`: `RateLimitedSession`, `curl_cffi` TLS impersonation, CSRF forms, `CheckpointScraper`, Playwright wait/scroll, embedded-state extraction, schema validation, circuit breaker.
+- `data-cleaning.md`: phone/address/email normalization, price cleaning, URL normalization, fuzzy dedup.
+- `output.md`: Excel generation, job directory scaffolding, logging setup.
+- `yfinance.md`: Treasury tickers, earnings dates, recommendations pivot, share-class ticker normalization.
+
+The orchestrator promotes a pattern into the toolbox only after it proves useful across two or more jobs and isn't tied to one site. Nothing here is aspirational. Every module earned its place by already solving a concrete problem twice.
+
+### Skill Files (`skills/*.md`)
+
+Methodology, not code. `extraction.md` for scraping techniques, `analysis.md` for chart and PDF construction, `selenium.md` for browser automation, `qc.md` for the quality-control checklist, `voice.md` for the writing style every agent inherits. When a job surfaces a gap in guidance, the retrospective patches the right skill file. Over time these files stop being generic advice and start encoding what actually worked in this repo on real jobs.
+
+### The Retrospective
+
+After every completed job, the orchestrator reads the agent's `execution_log.md` and the scripts it produced, then merges the learnings back:
+
+1. Update the site profile with new rate limits, new gotchas, new approaches that worked or failed. Refresh `last_probed`.
+2. Add or update the row in `skills/sites/index.md`.
+3. Promote any reusable pattern into the right toolbox module.
+4. Patch the relevant skill file if a gap in guidance surfaced.
+
+This is the step that actually makes Tycho smarter. Skipping it leaves the work as a one-off. The orchestrator treats the retrospective as part of the job, not as cleanup, and no job is marked complete without one.
 
 ## Extending the Framework
 
